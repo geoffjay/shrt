@@ -1,0 +1,10 @@
+[
+  {
+    "model": "url.url",
+    "pk": 1,
+    "fields": {
+      "name": "http://some.random.url/path",
+      "shortened": "http://localhost/AMzy"
+    }
+  }
+]
