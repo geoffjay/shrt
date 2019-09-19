@@ -13,9 +13,14 @@ RUN apk update \
 
 WORKDIR /app
 COPY . .
+
+ENV SHRT_BIND=0.0.0.0
+ENV SHRT_PORT=8000
+
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN python manage.py migrate
+RUN python manage.py migrate \
+    && python manage.py migrate
 
-EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+EXPOSE "$SHRT_PORT"
+CMD python manage.py runserver $SHRT_BIND:$SHRT_PORT
