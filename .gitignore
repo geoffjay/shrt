@@ -1,5 +1,6 @@
 *~
 *.sw[op]
+.vscode
 
 db.sqlite3
 *.pyc

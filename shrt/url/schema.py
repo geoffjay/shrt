@@ -5,27 +5,29 @@ from graphene_django.types import DjangoObjectType
 from shrt.url.models import Url
 
 class UrlType(DjangoObjectType):
+    """Simple object mapping."""
     class Meta:
         model = Url
 
 
 class Query(graphene.ObjectType):
+    """Query type to add to the root schema."""
     url = graphene.Field(UrlType,
                          id=graphene.Int(),
-                         name=graphene.String(),
+                         original=graphene.String(),
                          shortened=graphene.String())
     all_urls = graphene.List(UrlType)
 
     def resolve_url(self, info, **kwargs):
         id = kwargs.get('id')
-        name = kwargs.get('name')
+        original = kwargs.get('original')
         shortened = kwargs.get('shortened')
 
         if id is not None:
             return Url.objects.get(pk=id)
 
-        if name is not None:
-            return Url.objects.get(name=name)
+        if original is not None:
+            return Url.objects.get(original=original)
 
         if shortened is not None:
             return Url.objects.get(shortened=shortened)
@@ -37,21 +39,25 @@ class Query(graphene.ObjectType):
 
 
 class CreateUrl(graphene.Mutation):
+    """Mutation to handle creating a new URL entry."""
     id = graphene.Int()
-    name = graphene.String()
+    original = graphene.String()
+    shortened = graphene.String()
 
     class Arguments:
-        name = graphene.String(required=True)
+        original = graphene.String(required=True)
 
-    def mutate(self, info, name):
-        url = Url(name=name)
+    def mutate(self, info, original):
+        url = Url(original=original)
         url.save()
 
         return Url(
             id=url.id,
-            name=url.name
+            original=url.original,
+            shortened=url.shortened
         )
 
 
 class Mutation(graphene.ObjectType):
+    """Mutation type to add to the root schema."""
     create_url = CreateUrl.Field()
