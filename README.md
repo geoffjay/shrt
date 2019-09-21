@@ -1,6 +1,13 @@
 # Shrt
 
-A URL shortener.
+A URL shortener with a GraphQL API.
+
+After a new URL has been submitted a shortened tag value is generated and
+returned, it can be used to recall the original value used to create the entry.
+The tag can also be used directly with the host address to redirect to the
+original URL. For example, if the server was running locally using default
+settings, visiting the address http://localhost:8000/abcd would redirect to
+the original URL if one exists with a tag value matching `abcd`.
 
 ## Running
 
@@ -21,7 +28,7 @@ Variable | Default Value
 
 ```sh
 docker pull geoffjay/shrt:latest
-docker run --rm -p 8000:80 -it geoffjay/shrt:latest
+docker run --rm -p "8000:8000" -it geoffjay/shrt:latest
 ```
 
 ### Virtual Environment
@@ -53,19 +60,29 @@ similar to `0.0.0.0:80` to the command.
 python manage.py runserver
 ```
 
+### Testing
+
+Simple schema tests have been added and can be executed using the `django`
+management command `test`.
+
+```sh
+python manage.py test
+```
+
 ## Queries
 
-Submitting a new URL and reading one back are the only queries that have been
-implemented.
+Queries are available to submit a new URL, read all entries, read a single
+entry back by ID or by tag, and to delete a single entry by ID.
 
 ### Create
 
 ```gql
 mutation {
-  createUrl(name: "https://github.com/geoffjay/shrt") {
+  createUrl(original: "https://github.com/geoffjay/shrt") {
+    id
     original
-    shortened
-	}
+    tag
+  }
 }
 ```
 
@@ -75,7 +92,7 @@ Result:
 {
   "data": {
     "createUrl": {
-      "id": 3,
+      "id": 2,
       "original": "https://github.com/geoffjay/shrt",
       "shortened": "7QoG"
     }
@@ -85,9 +102,36 @@ Result:
 
 ### Read
 
+#### By ID
+
 ```gql
 query {
-  url(shortened: "http://localhost/AMZQ") {
+  url(id: 1) {
+    original
+    tag
+  }
+}
+```
+
+Result:
+
+```json
+{
+  "data": {
+    "url": {
+      "original": "http://github.com/geoffjay/shrt",
+      "tag": "AMzy"
+    }
+  }
+}
+```
+
+#### By Tag
+
+```gql
+query {
+  url(tag: "AMzy") {
+    id
     original
   }
 }
@@ -101,7 +145,61 @@ Result:
     "url": {
       "id": "1",
       "original": "http://github.com/geoffjay/shrt",
-      "shortened": "AMZQ"
+    }
+  }
+}
+```
+
+### Read All
+
+```gql
+query ReadAllUrls {
+  allUrls {
+    id
+    original
+    tag
+  }
+}
+```
+
+Result:
+
+```json
+{
+  "data": {
+    "allUrls": [
+      {
+        "id": "1",
+        "original": "https://github.com/geoffjay/shrt",
+        "tag": "AMzy"
+      },
+      {
+        "id": "2",
+        "original": "https://github.com/geoffjay/shrt",
+        "tag": "jkBa"
+      }
+    ]
+  }
+}
+```
+
+### Delete
+
+```gql
+mutation DeleteUrl {
+  deleteUrl(id:2) {
+    id
+  }
+}
+```
+
+Result:
+
+```json
+{
+  "data": {
+    "deleteUrl": {
+      "id": 2
     }
   }
 }

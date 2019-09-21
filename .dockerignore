@@ -1,4 +1,7 @@
 .venv/
 
+db.sqlite3
+
 build/
 sdist/
+shrt.egg-info/

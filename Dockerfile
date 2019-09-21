@@ -8,6 +8,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN apk update \
     && apk upgrade \
     && apk add \
+        build-base \
+        gcc \
+        python3-dev \
         py3-setuptools \
         sqlite
 
