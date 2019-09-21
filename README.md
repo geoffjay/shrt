@@ -40,7 +40,6 @@ apply the migrations to the database, and optionally load a piece of
 sample data.
 
 ```sh
-python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata urls
 ```
