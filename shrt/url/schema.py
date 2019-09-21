@@ -11,26 +11,23 @@ class UrlType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    """Query type to add to the root schema."""
+    """Query type to add to the root schema.
+
+    Allows querying by ID and by tag if either exists."""
     url = graphene.Field(UrlType,
                          id=graphene.Int(),
-                         original=graphene.String(),
-                         shortened=graphene.String())
+                         tag=graphene.String())
     all_urls = graphene.List(UrlType)
 
     def resolve_url(self, info, **kwargs):
         id = kwargs.get('id')
-        original = kwargs.get('original')
-        shortened = kwargs.get('shortened')
+        tag = kwargs.get('tag')
 
         if id is not None:
             return Url.objects.get(pk=id)
 
-        if original is not None:
-            return Url.objects.get(original=original)
-
-        if shortened is not None:
-            return Url.objects.get(shortened=shortened)
+        if tag is not None:
+            return Url.objects.get(tag=tag)
 
         return None
 
@@ -42,7 +39,7 @@ class CreateUrl(graphene.Mutation):
     """Mutation to handle creating a new URL entry."""
     id = graphene.Int()
     original = graphene.String()
-    shortened = graphene.String()
+    tag = graphene.String()
 
     class Arguments:
         original = graphene.String(required=True)
@@ -54,10 +51,27 @@ class CreateUrl(graphene.Mutation):
         return Url(
             id=url.id,
             original=url.original,
-            shortened=url.shortened
+            tag=url.tag
+        )
+
+
+class DeleteUrl(graphene.Mutation):
+    """Mutation to handle deleting a URL entry."""
+    id = graphene.Int()
+
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    def mutate(self, info, id):
+        url = Url(pk=id)
+        url.delete()
+
+        return Url(
+            id=id
         )
 
 
 class Mutation(graphene.ObjectType):
     """Mutation type to add to the root schema."""
     create_url = CreateUrl.Field()
+    delete_url = DeleteUrl.Field()

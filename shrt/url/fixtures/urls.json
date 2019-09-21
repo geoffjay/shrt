@@ -3,8 +3,7 @@
     "model": "url.url",
     "pk": 1,
     "fields": {
-      "original": "http://some.random.url/path",
-      "shortened": "http://localhost/AMzy",
+      "original": "https://github.com/geoffjay/shrt",
       "tag": "AMzy"
     }
   }

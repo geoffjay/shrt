@@ -11,7 +11,6 @@ class UrlView(View):
     """
 
     def get(self, request, tag):
-        # url = Url.objects.get(tag=tag)
-        url = Url.objects.get(shortened=tag)
+        url = Url.objects.get(tag=tag)
         response = redirect(url.original)
         return response
