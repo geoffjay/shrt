@@ -37,7 +37,7 @@ docker run --rm -p "8000:8000" -it geoffjay/shrt:latest
 ```
 
 A running `graphiql` instance should be available at
-http://localhost:8000/graphql.
+http://127.0.0.1:8000/graphql.
 
 #### Environment
 
@@ -79,7 +79,7 @@ python manage.py runserver
 ```
 
 A running `graphiql` instance should be available at
-http://localhost:8000/graphql.
+http://127.0.0.1:8000/graphql.
 
 ### Testing
 
