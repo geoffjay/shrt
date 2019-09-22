@@ -213,13 +213,13 @@ Result:
       {
         "id": "1",
         "original": "https://github.com/geoffjay/shrt",
-        "tag": "AMzy"
+        "tag": "AMzy",
         "shortened": "http://localhost:8000/AMzy"
       },
       {
         "id": "2",
         "original": "https://github.com/geoffjay/shrt",
-        "tag": "jkBa"
+        "tag": "jkBa",
         "shortened": "http://localhost:8000/jkBa"
       }
     ]
