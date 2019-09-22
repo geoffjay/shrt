@@ -52,18 +52,18 @@ class SchemaTest(GraphQLTestCase):
                 createUrl(original: "https://github.com/geoffjay/shrt") {
                     id
                     original
-                    tag
+                    shortened
                 }
             }
             ''',
             op_name='createUrl'
         )
-        tag = resp['data']['createUrl']['tag']
+        shortened = resp['data']['createUrl']['shortened']
         expected = {
             'createUrl': {
                 'id': 1,
                 'original': 'https://github.com/geoffjay/shrt',
-                'tag': tag
+                'shortened': shortened
             }
         }
         self.assertResponseNoErrors(resp, expected)
@@ -95,6 +95,12 @@ class SchemaTest(GraphQLTestCase):
         self.assertResponseNoErrors(resp, expected)
 
     def test_delete_mutation_successful(self):
+        # Manually add an entity to query
+        url = Url(
+            original='https://this.doesnt.matter/url/to/delete'
+        )
+        url.save()
+        saved = Url.objects.get(id=1)
         resp = self.query(
             '''
             mutation DeleteUrl {
@@ -103,6 +109,6 @@ class SchemaTest(GraphQLTestCase):
                 }
             }
             ''',
-            op_name='createUrl'
+            op_name='deleteUrl'
         )
         self.assertResponseNoErrors(resp, {'deleteUrl': {'id': 1}})

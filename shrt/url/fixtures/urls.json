@@ -4,7 +4,8 @@
     "pk": 1,
     "fields": {
       "original": "https://github.com/geoffjay/shrt",
-      "tag": "AMzy"
+      "tag": "AMzy",
+      "shortened": "http://localhost:8000/AMzy"
     }
   }
 ]

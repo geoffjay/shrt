@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     # Install our app
     'shrt.url',
     'graphene_django',
@@ -83,6 +82,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+SITE_DOMAIN = 'localhost'
+SITE_PORT = 8000
+SITE_PROTOCOL = 'http'
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'

@@ -13,21 +13,31 @@ class UrlType(DjangoObjectType):
 class Query(graphene.ObjectType):
     """Query type to add to the root schema.
 
-    Allows querying by ID and by tag if either exists."""
+    Allows querying by ID, tag, and shortened URL if they exist.
+
+    Attributes:
+        url (Field): Query type representing the URL model for single response.
+        all_urls (List): A list of URL objects for responding with all entities.
+    """
     url = graphene.Field(UrlType,
                          id=graphene.Int(),
-                         tag=graphene.String())
+                         tag=graphene.String(),
+                         shortened=graphene.String())
     all_urls = graphene.List(UrlType)
 
     def resolve_url(self, info, **kwargs):
         id = kwargs.get('id')
         tag = kwargs.get('tag')
+        shortened = kwargs.get('shortened')
 
         if id is not None:
             return Url.objects.get(pk=id)
 
         if tag is not None:
             return Url.objects.get(tag=tag)
+
+        if shortened is not None:
+            return Url.objects.get(shortened=shortened)
 
         return None
 
@@ -36,10 +46,16 @@ class Query(graphene.ObjectType):
 
 
 class CreateUrl(graphene.Mutation):
-    """Mutation to handle creating a new URL entry."""
+    """Mutation to handle creating a new URL entry.
+
+    Attributes:
+        id (int): ID of the entity that was created.
+        original (str): The full URL given to shorten.
+        shortened (str): The shortened URL including host and tag.
+    """
     id = graphene.Int()
     original = graphene.String()
-    tag = graphene.String()
+    shortened = graphene.String()
 
     class Arguments:
         original = graphene.String(required=True)
@@ -51,19 +67,23 @@ class CreateUrl(graphene.Mutation):
         return Url(
             id=url.id,
             original=url.original,
-            tag=url.tag
+            shortened=url.shortened
         )
 
 
 class DeleteUrl(graphene.Mutation):
-    """Mutation to handle deleting a URL entry."""
+    """Mutation to handle deleting a URL entry.
+
+    Attributes:
+        id (int): ID of the entity to delete.
+    """
     id = graphene.Int()
 
     class Arguments:
         id = graphene.Int(required=True)
 
     def mutate(self, info, id):
-        url = Url(pk=id)
+        url = Url.objects.get(pk=id)
         url.delete()
 
         return Url(

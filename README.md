@@ -14,22 +14,22 @@ the original URL if one exists with a tag value matching `abcd`.
 ### Docker
 
 Using `docker` is the preferred method to retrieve and run `shrt`, this is done
-the usual way.
-
-#### Environment
-
-Variables to set the default address to bind to and the port to listen on are
-available.
-
-Variable | Default Value
--: | :-:
-`SHRT_BIND` | 0.0.0.0
-`SHRT_PORT` | 8000
+the usual way with the `pull` and `run` commands.
 
 ```sh
 docker pull geoffjay/shrt:latest
 docker run --rm -p "8000:8000" -it geoffjay/shrt:latest
 ```
+
+#### Environment
+
+Variables to change the address to bind to and the port to listen on are
+available.
+
+Variable | Default Value
+:-: | :-:
+`SHRT_BIND` | 0.0.0.0
+`SHRT_PORT` | 8000
 
 ### Virtual Environment
 
