@@ -9,6 +9,21 @@ original URL. For example, if the server was running locally using default
 settings, visiting the address http://localhost:8000/abcd would redirect to
 the original URL if one exists with a tag value matching `abcd`.
 
+## Configuration
+
+The shortened URL when provided is built using variables from the application
+`settings.py` file. The defaults used during development are given in this
+table.
+
+Variable | Default Value
+:-: | :-:
+`SITE_DOMAIN` | localhost
+`SITE_PORT` | 8000
+`SITE_PROTOCOL` | http
+
+This will generate a site address of http://localhost:8000 to use with the
+shortened URL.
+
 ## Running
 
 ### Docker
@@ -81,7 +96,7 @@ mutation {
   createUrl(original: "https://github.com/geoffjay/shrt") {
     id
     original
-    tag
+    shortened
   }
 }
 ```
@@ -94,7 +109,7 @@ Result:
     "createUrl": {
       "id": 2,
       "original": "https://github.com/geoffjay/shrt",
-      "shortened": "7QoG"
+      "shortened": "http://localhost:8000/jkBa"
     }
   }
 }
@@ -109,6 +124,7 @@ query {
   url(id: 1) {
     original
     tag
+    shortened
   }
 }
 ```
@@ -120,7 +136,8 @@ Result:
   "data": {
     "url": {
       "original": "http://github.com/geoffjay/shrt",
-      "tag": "AMzy"
+      "tag": "AMzy",
+      "shortened": "http://localhost:8000/AMzy"
     }
   }
 }
@@ -150,6 +167,30 @@ Result:
 }
 ```
 
+#### By Shortened URL
+
+```gql
+query {
+  url(shortened: "http://localhost:8000/AMzy") {
+    id
+    original
+  }
+}
+```
+
+Result:
+
+```json
+{
+  "data": {
+    "url": {
+      "id": "1",
+      "original": "http://github.com/geoffjay/shrt",
+    }
+  }
+}
+```
+
 ### Read All
 
 ```gql
@@ -158,6 +199,7 @@ query ReadAllUrls {
     id
     original
     tag
+    shortened
   }
 }
 ```
@@ -172,11 +214,13 @@ Result:
         "id": "1",
         "original": "https://github.com/geoffjay/shrt",
         "tag": "AMzy"
+        "shortened": "http://localhost:8000/AMzy"
       },
       {
         "id": "2",
         "original": "https://github.com/geoffjay/shrt",
         "tag": "jkBa"
+        "shortened": "http://localhost:8000/jkBa"
       }
     ]
   }
