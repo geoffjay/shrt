@@ -2,12 +2,12 @@
 
 A URL shortener with a GraphQL API.
 
-After a new URL has been submitted a shortened tag value is generated and
-returned, it can be used to recall the original value used to create the entry.
-The tag can also be used directly with the host address to redirect to the
-original URL. For example, if the server was running locally using default
-settings, visiting the address http://localhost:8000/abcd would redirect to
-the original URL if one exists with a tag value matching `abcd`.
+After a new URL has been submitted a shortened tag value and URL are generated
+and returned, they can be used to recall the original value used to create the
+entry. The shortened URL can also be used directly with the host address to
+redirect to the original URL. For example, if the server was running locally
+using default settings, visiting the address http://localhost:8000/abcd would
+redirect to the original URL if one exists with a tag value matching `abcd`.
 
 ## Configuration
 
@@ -55,9 +55,11 @@ Using `venv` to setup the application and its dependencies is done by executing
 the following steps.
 
 ```sh
+git clone https://github.com/geoffjay/shrt.git
+cd shrt
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt -e .
+pip install -r requirements.txt
 ```
 
 If it's the first time the application has been started it's necessary to
@@ -93,7 +95,7 @@ python manage.py test
 ## Queries
 
 Queries are available to submit a new URL, read all entries, read a single
-entry back by ID or by tag, and to delete a single entry by ID.
+entry back by ID, tag, or the shortened URL, and to delete a single entry by ID.
 
 ### Create
 
