@@ -36,6 +36,9 @@ docker pull geoffjay/shrt:latest
 docker run --rm -p "8000:8000" -it geoffjay/shrt:latest
 ```
 
+A running `graphiql` instance should be available at
+http://localhost:8000/graphql.
+
 #### Environment
 
 Variables to change the address to bind to and the port to listen on are
@@ -74,6 +77,9 @@ similar to `0.0.0.0:80` to the command.
 ```sh
 python manage.py runserver
 ```
+
+A running `graphiql` instance should be available at
+http://localhost:8000/graphql.
 
 ### Testing
 
