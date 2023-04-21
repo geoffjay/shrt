@@ -10,4 +10,4 @@ Rx==1.6.1
 #-e git+git@github.com:geoffjay/shrt.git@74e7116939ae653c8acf0bbedcf4e16360f0874e#egg=shrt
 singledispatch==3.4.0.3
 six==1.12.0
-sqlparse==0.3.0
+sqlparse==0.4.4
